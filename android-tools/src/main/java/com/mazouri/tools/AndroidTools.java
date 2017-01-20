@@ -10,6 +10,7 @@ import com.mazouri.tools.device.DeviceTool;
 import com.mazouri.tools.device.NetworkTool;
 import com.mazouri.tools.image.BitmapTool;
 import com.mazouri.tools.io.ExternalStorageTool;
+import com.mazouri.tools.io.SPTool;
 import com.mazouri.tools.log.LogTool;
 import com.mazouri.tools.regex.RegexTool;
 import com.mazouri.tools.secure.SecureAESTool;
@@ -47,6 +48,7 @@ public class AndroidTools {
     private static InputMethodTool mInputMethodTool;
     private static ToastTool mToast;
     private static NetworkTool mNetwork;
+    private static SPTool mSP;
 
     public AndroidTools() {
     }
@@ -201,5 +203,12 @@ public class AndroidTools {
             mNetwork = NetworkTool.instance();
         }
         return mNetwork;
+    }
+
+    public static SPTool sp() {
+        if (mSP == null) {
+            mSP = SPTool.instance();
+        }
+        return mSP;
     }
 }
