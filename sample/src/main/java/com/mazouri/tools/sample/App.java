@@ -16,6 +16,9 @@ public class App extends Application {
 
         AndroidTools.init(this);
         AndroidTools.openToolsLog(true);
-        AndroidTools.log().d("use Android log tool");
+
+        AndroidTools.log().d("print log with default generated tag");
+        AndroidTools.log().tag(App.class.getSimpleName()).d("print log with tag()");
+        AndroidTools.log().d(App.class.getSimpleName(), "print log with set tag");
     }
 }

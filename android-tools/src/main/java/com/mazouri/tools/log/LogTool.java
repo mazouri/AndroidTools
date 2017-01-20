@@ -2,6 +2,8 @@ package com.mazouri.tools.log;
 
 import android.util.Log;
 
+import com.mazouri.tools.AndroidTools;
+
 /**
  * Created by wangdongdong on 17-1-20.
  */
@@ -26,6 +28,18 @@ public final class LogTool {
         return instance;
     }
 
+    private void generateTag() {
+        if (!AndroidTools.string().isEmpty(mTag)) {
+            return;
+        }
+
+        StackTraceElement caller = new Throwable().getStackTrace()[2];
+        String tag = "%s.%s(line:%d)";
+        String callerClazzName = caller.getClassName();
+        callerClazzName = callerClazzName.substring(callerClazzName.lastIndexOf(".") + 1);
+        mTag = String.format(tag, callerClazzName, caller.getMethodName(), caller.getLineNumber());
+    }
+
     public void setDebug(boolean debug) {
         this.DEBUG = debug;
     }
@@ -37,6 +51,7 @@ public final class LogTool {
 
     public void i(String msg) {
         if (DEBUG) {
+            generateTag();
             Log.i(AndroidToolsTAG, "{Thread:" + Thread.currentThread().getName() + "}" + "[tag=>" + mTag + ":] ==========> " + msg);
         }
     }
@@ -56,6 +71,7 @@ public final class LogTool {
 
     public void d(String msg) {
         if (DEBUG) {
+            generateTag();
             Log.d(AndroidToolsTAG, "{Thread:" + Thread.currentThread().getName() + "}" + "[tag=>" + mTag + ":] ==========> " + msg);
         }
     }
@@ -75,6 +91,7 @@ public final class LogTool {
 
     public void v(String msg) {
         if (DEBUG) {
+            generateTag();
             Log.v(AndroidToolsTAG, "{Thread:" + Thread.currentThread().getName() + "}" + "[tag=>" + mTag + ":] ==========> " + msg);
         }
 
@@ -89,6 +106,7 @@ public final class LogTool {
 
     public void e(String msg) {
         if (DEBUG) {
+            generateTag();
             Log.e(AndroidToolsTAG, "{Thread:" + Thread.currentThread().getName() + "}" + "[tag=>" + mTag + ":] ==========> " + msg);
         }
     }
@@ -108,6 +126,7 @@ public final class LogTool {
 
     public void w(String msg) {
         if (DEBUG) {
+            generateTag();
             Log.w(AndroidToolsTAG, "{Thread:" + Thread.currentThread().getName() + "}" + "[tag=>" + mTag + ":] ==========> " + msg);
         }
     }
