@@ -1,12 +1,34 @@
-package com.mazouri.tools;
+package com.mazouri.tools.string;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
+ * String工具类
+ *
  * Created by wangdongdong on 17-1-20.
  */
 
-public interface IString {
+public final class StringTool {
+
+    private static final Object lock = new Object();
+    private static volatile StringTool instance;
+
+    private StringTool() {
+    }
+
+    public static StringTool instance() {
+        if (instance == null) {
+            synchronized (lock) {
+                if (instance == null) {
+                    instance = new StringTool();
+                }
+            }
+        }
+        return instance;
+    }
 
     /**
      * is null or its length is 0 or it is made by space
@@ -24,7 +46,9 @@ public interface IString {
      * @param str
      * @return if string is null or its size is 0 or it is made by space, return true, else return false.
      */
-    boolean isBlank(String str);
+    public boolean isBlank(String str) {
+        return (str == null || str.trim().length() == 0);
+    }
 
     /**
      * is null or its length is 0
@@ -38,7 +62,9 @@ public interface IString {
      * @param str
      * @return if string is null or its size is 0, return true, else return false.
      */
-    boolean isEmpty(String str);
+    public boolean isEmpty(String str) {
+        return (str == null || str.length() == 0) && isBlank(str);
+    }
 
     /**
      * get length of CharSequence
@@ -52,7 +78,9 @@ public interface IString {
      * @param str
      * @return if str is null or empty, return 0, else return {@link CharSequence#length()}.
      */
-    int length(CharSequence str);
+    public int length(CharSequence str) {
+        return str == null ? 0 : str.length();
+    }
 
     /**
      * null Object to empty string
@@ -66,7 +94,9 @@ public interface IString {
      * @param str
      * @return
      */
-    String nullStrToEmpty(Object str);
+    public String nullStrToEmpty(Object str) {
+        return (str == null ? "" : (str instanceof String ? (String)str : str.toString()));
+    }
 
     /**
      * capitalize first letter
@@ -83,7 +113,15 @@ public interface IString {
      * @param str
      * @return
      */
-    String capitalizeFirstLetter(String str);
+    public String capitalizeFirstLetter(String str) {
+        if (isEmpty(str)) {
+            return str;
+        }
+
+        char c = str.charAt(0);
+        return (!Character.isLetter(c) || Character.isUpperCase(c)) ? str : new StringBuilder(str.length())
+                .append(Character.toUpperCase(c)).append(str.substring(1)).toString();
+    }
 
     /**
      * encoded in utf-8
@@ -99,16 +137,34 @@ public interface IString {
      * @return
      * @throws UnsupportedEncodingException if an error occurs
      */
-    String utf8Encode(String str);
+    public String utf8Encode(String str) {
+        if (!isEmpty(str) && str.getBytes().length != str.length()) {
+            try {
+                return URLEncoder.encode(str, "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                throw new RuntimeException("UnsupportedEncodingException occurred. ", e);
+            }
+        }
+        return str;
+    }
 
     /**
-     * encoded in utf-8, if exception, return defaultReturn
+     * encoded in utf-8, if exception, return defultReturn
      *
      * @param str
      * @param defaultReturn
      * @return
      */
-    String utf8Encode(String str, String defaultReturn);
+    public String utf8Encode(String str, String defaultReturn) {
+        if (!isEmpty(str) && str.getBytes().length != str.length()) {
+            try {
+                return URLEncoder.encode(str, "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                return defaultReturn;
+            }
+        }
+        return str;
+    }
 
     /**
      * get innerHtml from href
@@ -135,7 +191,19 @@ public interface IString {
      *         <li>return the last string that match regx</li>
      *         </ul>
      */
-    String getHrefInnerHtml(String href);
+    public String getHrefInnerHtml(String href) {
+        if (isEmpty(href)) {
+            return "";
+        }
+
+        String hrefReg = ".*<[\\s]*a[\\s]*.*>(.+?)<[\\s]*/a[\\s]*>.*";
+        Pattern hrefPattern = Pattern.compile(hrefReg, Pattern.CASE_INSENSITIVE);
+        Matcher hrefMatcher = hrefPattern.matcher(href);
+        if (hrefMatcher.matches()) {
+            return hrefMatcher.group(1);
+        }
+        return href;
+    }
 
     /**
      * process special char in html
@@ -154,7 +222,10 @@ public interface IString {
      * @param source
      * @return
      */
-    String htmlEscapeCharsToString(String source);
+    public String htmlEscapeCharsToString(String source) {
+        return isEmpty(source) ? source : source.replaceAll("&lt;", "<").replaceAll("&gt;", ">")
+                .replaceAll("&amp;", "&").replaceAll("&quot;", "\"");
+    }
 
     /**
      * transform half width char to full width char
@@ -169,7 +240,25 @@ public interface IString {
      * @param s
      * @return
      */
-    String fullWidthToHalfWidth(String s);
+    public String fullWidthToHalfWidth(String s) {
+        if (isEmpty(s)) {
+            return s;
+        }
+
+        char[] source = s.toCharArray();
+        for (int i = 0; i < source.length; i++) {
+            if (source[i] == 12288) {
+                source[i] = ' ';
+                // } else if (source[i] == 12290) {
+                // source[i] = '.';
+            } else if (source[i] >= 65281 && source[i] <= 65374) {
+                source[i] = (char)(source[i] - 65248);
+            } else {
+                source[i] = source[i];
+            }
+        }
+        return new String(source);
+    }
 
     /**
      * transform full width char to half width char
@@ -184,12 +273,41 @@ public interface IString {
      * @param s
      * @return
      */
-    String halfWidthToFullWidth(String s);
+    public String halfWidthToFullWidth(String s) {
+        if (isEmpty(s)) {
+            return s;
+        }
+
+        char[] source = s.toCharArray();
+        for (int i = 0; i < source.length; i++) {
+            if (source[i] == ' ') {
+                source[i] = (char)12288;
+                // } else if (source[i] == '.') {
+                // source[i] = (char)12290;
+            } else if (source[i] >= 33 && source[i] <= 126) {
+                source[i] = (char)(source[i] + 65248);
+            } else {
+                source[i] = source[i];
+            }
+        }
+        return new String(source);
+    }
 
     /**
      * 数据库字符转义
      * @param keyWord
      * @return
      */
-    String sqliteEscape(String keyWord);
+    public String sqliteEscape(String keyWord){
+        keyWord = keyWord.replace("/", "//");
+        keyWord = keyWord.replace("'", "''");
+        keyWord = keyWord.replace("[", "/[");
+        keyWord = keyWord.replace("]", "/]");
+        keyWord = keyWord.replace("%", "/%");
+        keyWord = keyWord.replace("&","/&");
+        keyWord = keyWord.replace("_", "/_");
+        keyWord = keyWord.replace("(", "/(");
+        keyWord = keyWord.replace(")", "/)");
+        return keyWord;
+    }
 }

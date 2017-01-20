@@ -15,6 +15,7 @@ public class App extends Application {
         super.onCreate();
 
         AndroidTools.init(this);
-        AndroidTools.setDebug(true);
+        AndroidTools.openToolsLog(true);
+        AndroidTools.log().d("use Android log tool");
     }
 }

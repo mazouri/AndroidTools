@@ -7,9 +7,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 
-import com.mazouri.tools.AndroidTools;
-import com.mazouri.tools.IApk;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,29 +16,35 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 /**
+ * Apk工具
+ *
  * Created by wangdongdong on 17-1-20.
  */
 
-public final class ApkImpl implements IApk {
+public final class ApkTool {
 
     private static final Object lock = new Object();
-    private static volatile ApkImpl instance;
+    private static volatile ApkTool instance;
 
-    private ApkImpl() {
+    private ApkTool() {
     }
 
-    public static ApkImpl instance() {
+    public static ApkTool instance() {
         if (instance == null) {
             synchronized (lock) {
                 if (instance == null) {
-                    instance = new ApkImpl();
+                    instance = new ApkTool();
                 }
             }
         }
         return instance;
     }
 
-    @Override
+    /**
+     * 安装一个apk文件
+     * @param context
+     * @param uriFile
+     */
     public void install(Context context, File uriFile) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setDataAndType(Uri.fromFile(uriFile), "application/vnd.android.package-archive");
@@ -49,7 +52,11 @@ public final class ApkImpl implements IApk {
         context.startActivity(intent);
     }
 
-    @Override
+    /**
+     * 卸载一个app
+     * @param context
+     * @param packageName
+     */
     public void uninstall(Context context, String packageName) {
         //通过程序的包名创建URI
         Uri packageURI = Uri.parse("package:" + packageName);
@@ -59,8 +66,14 @@ public final class ApkImpl implements IApk {
         context.startActivity(intent);
     }
 
-    @Override
-    public boolean isAvailable(Context context, String packageName) {
+    /**
+     * 检查手机上是否安装了指定的软件
+     *
+     * @param context
+     * @param packageName 应用包名
+     * @return
+     */
+    public boolean isAppInstall(Context context, String packageName) {
         // 获取packagemanager
         final PackageManager packageManager = context.getPackageManager();
         // 获取所有已安装程序的包信息
@@ -78,7 +91,12 @@ public final class ApkImpl implements IApk {
         return packageNames.contains(packageName);
     }
 
-    @Override
+    /**
+     * 从apk中获取版本信息
+     * @param context
+     * @param channelPrefix
+     * @return
+     */
     public String getChannelFromApk(Context context, String channelPrefix) {
         //从apk包中获取
         ApplicationInfo appinfo = context.getApplicationInfo();

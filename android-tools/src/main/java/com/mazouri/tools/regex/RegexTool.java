@@ -1,15 +1,12 @@
 package com.mazouri.tools.regex;
 
-import com.mazouri.tools.AndroidTools;
-import com.mazouri.tools.IRegex;
-
 import java.util.regex.Pattern;
 
 /**
  * Created by wangdongdong on 17-1-20.
  */
 
-public final class RegexImpl implements IRegex {
+public final class RegexTool {
 
     /**
      * 正则表达式:验证用户名(不包含中文和特殊字符)如果用户名使用手机号码或邮箱 则结合手机号验证和邮箱验证
@@ -51,60 +48,70 @@ public final class RegexImpl implements IRegex {
      */
     private static final String REGEX_IP_ADDR = "(2[5][0-5]|2[0-4]\\d|1\\d{2}|\\d{1,2})\\.(25[0-5]|2[0-4]\\d|1\\d{2}|\\d{1,2})\\.(25[0-5]|2[0-4]\\d|1\\d{2}|\\d{1,2})\\.(25[0-5]|2[0-4]\\d|1\\d{2}|\\d{1,2})";
 
-    private static final Object lock = new Object();
-    private static volatile RegexImpl instance;
+    /**
+     * 正则表达式:验证车牌号
+     */
+    private static final String REGEX_PLATENUM = "^[\\u4E00-\\u9FA5]([0-9A-Z]{6})|([0-9A-Z]{5}[\\u4E00-\\u9FA5]{1})$";
 
-    private RegexImpl() {
+    /**
+     * 正则表达式:验证车辆vin码
+     */
+    private static final String REGEX_VIN = "^[0-9A-Za-z]+$";
+
+    private static final Object lock = new Object();
+    private static volatile RegexTool instance;
+
+    private RegexTool() {
     }
 
-    public static RegexImpl instance() {
+    public static RegexTool instance() {
         if (instance == null) {
             synchronized (lock) {
                 if (instance == null) {
-                    instance = new RegexImpl();
+                    instance = new RegexTool();
                 }
             }
         }
         return instance;
     }
 
-    @Override
     public boolean isUserName(String username) {
         return Pattern.matches(REGEX_USERNAME, username);
     }
 
-    @Override
     public boolean isPassword(String password) {
         return Pattern.matches(REGEX_PASSWORD, password);
     }
 
-    @Override
     public boolean isMobile(String mobile) {
         return Pattern.matches(REGEX_MOBILE, mobile);
     }
 
-    @Override
     public boolean isEmail(String email) {
         return Pattern.matches(REGEX_EMAIL, email);
     }
 
-    @Override
     public boolean isChinese(String chinese) {
         return Pattern.matches(REGEX_CHINESE, chinese);
     }
 
-    @Override
     public boolean isIDCard(String idCard) {
         return Pattern.matches(REGEX_ID_CARD, idCard);
     }
 
-    @Override
     public boolean isUrl(String url) {
         return Pattern.matches(REGEX_URL, url);
     }
 
-    @Override
     public boolean isIPAddress(String ipAddress) {
         return Pattern.matches(REGEX_IP_ADDR, ipAddress);
+    }
+
+    public boolean isPlateNum(String plateNum) {
+        return Pattern.matches(REGEX_PLATENUM, plateNum);
+    }
+
+    public boolean isVehicleVin(String vin) {
+        return Pattern.matches(REGEX_VIN, vin);
     }
 }
