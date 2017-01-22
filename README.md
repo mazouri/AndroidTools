@@ -67,6 +67,8 @@ This library contains the most of tools that we use on Android development. Just
 </tr>
 </table>
 
+All tools list: AppTool, ApkTool, InputMethodTool, IntentTool, ProcessTool, SnackbarTool, ToastTool, ConstantsTool, ConvertTool, DeviceTool, NetworkTool, BitmapTool, CloseTool, ExternalStorageTool, FileTool, SPTool, LogTool, RegexTool, SecureTool, ShellTool, StringTool, TimeTool, UnitTool.
+
 ### AppTool
     //usage examples:
     Tools.appTool().getAllRunningService(Tools.app()); //获取所有运行的服务
