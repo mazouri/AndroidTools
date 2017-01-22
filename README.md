@@ -33,22 +33,28 @@ This library contains the most of tools that we use on Android development. Just
       public void onCreate() {
           super.onCreate();
 
-          Tools.init(this); //[Required]
+	  //[Required]
+          Tools.init(this); 
           
-          Tools.openToolsLog(true); //[Optional] if u wanna see AndroidTools internal logs, add this line.
+	  //[Optional] if u wanna see AndroidTools internal logs, add this line.
+          Tools.openToolsLog(true); 
       }
     }
     
+
 ### 4.Then U could use tools that u want like this:
 
-    Tools.log().tag(App.class.getSimpleName()).d("print log with tag()"); // print log with tag.
+    // print log with tag.
+    Tools.log().tag(App.class.getSimpleName()).d("print log with tag()"); 
     
-    Tools.string().isEmpty(App.class.getSimpleName()); // is null or its length is 0. [will return false]
+    // is null or its length is 0. [will return false]
+    Tools.string().isEmpty(App.class.getSimpleName()); 
     
-    Tools.network().isWifiConnected(this);  // is wifi connected? [will return true||false]
+    // is wifi connected? [will return true||false]
+    Tools.network().isWifiConnected(this);  
     
 ## Screenshots [tobeupdate]
 
 ## Classify tools [tobeupdate]
 
-You can also query by **docs**.
+**You can also query by **docs****.
