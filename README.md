@@ -37,7 +37,7 @@ This library contains the most of tools that we use on Android development. Just
           Tools.init(this); 
           
 	  //[Optional] if u wanna see AndroidTools internal logs, add this line.
-          Tools.openToolsLog(true); 
+	  Tools.openToolsLog(true); 
       }
     }
     
