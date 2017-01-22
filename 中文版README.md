@@ -2,11 +2,11 @@
 
 [![](https://jitpack.io/v/mazouri/AndroidTools.svg)](https://jitpack.io/#mazouri/AndroidTools)
 
-[English README]
+[English README](https://github.com/mazouri/AndroidTools/blob/master/README.md)
 
 ## 关于AndroidTools
 
-This library contains the most of tools that we use on Android development. Just add this to your module, you could simplify　your code, save your valuable time, and make developing app easier.
+这个项目包含了我们Android开发中常用的工具类。集成这个项目后，我们自己写各种Utils类了，这将会简化你的代码，节省开发者的宝贵时间，让我们把注意力转到最重要的业务上来，使我们的开发变得更容易。Happy coding!
 
 ## 如何使用AndroidTools
 
@@ -22,7 +22,7 @@ This library contains the most of tools that we use on Android development. Just
 ### 2.在你的app/build.gradle文件中添加依赖：
 
     dependencies {
-	        compile 'com.github.mazouri:AndroidTools:0.1'
+	        compile 'com.github.mazouri:AndroidTools:1.0'
 	  }
     
 ### 3.在你的application类中初始化AndroidTools:
@@ -55,7 +55,7 @@ This library contains the most of tools that we use on Android development. Just
     
 ## Screenshots
 
-<img src="./screenshot/AndroidTools.jpg" width="250">
+<img src="./screenshot/AndroidTools.jpg" width="450">
 
 ## 归类总结，方便大家查阅
 
