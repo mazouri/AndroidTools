@@ -2,7 +2,7 @@
 
 [![](https://jitpack.io/v/mazouri/AndroidTools.svg)](https://jitpack.io/#mazouri/AndroidTools)
 
-[中文版README]
+[中文版README](https://github.com/mazouri/AndroidTools/blob/master/%E4%B8%AD%E6%96%87%E7%89%88README.md)
 
 ## About AndroidTools
 
@@ -34,7 +34,7 @@ This library contains the most of tools that we use on Android development. Just
           super.onCreate();
 
 	  //[Required]
-          Tools.init(this); 
+	  Tools.init(this); 
           
 	  //[Optional] if u wanna see AndroidTools internal logs, add this line.
 	  Tools.openToolsLog(true); 
