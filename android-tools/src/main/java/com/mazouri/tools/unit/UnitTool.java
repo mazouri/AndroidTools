@@ -25,7 +25,9 @@ public final class UnitTool {
         return instance;
     }
 
-    //摄氏度转华氏度
+    /**
+     * 摄氏度转华氏度
+     */
     public static float c2f(float c) {
         float f = c * 9 / 5 + 32;
         return f;

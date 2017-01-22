@@ -59,7 +59,7 @@ public final class InputMethodTool {
     }
 
     /**
-     * 判断输入负是否处于激活状态
+     * 判断输入法是否处于激活状态
      * @param context
      * @return
      */

@@ -1,11 +1,15 @@
 com.mazouri.tools
 com.mazouri.tools.apk
 com.mazouri.tools.app
+com.mazouri.tools.constants
+com.mazouri.tools.convert
 com.mazouri.tools.device
 com.mazouri.tools.image
 com.mazouri.tools.io
 com.mazouri.tools.log
 com.mazouri.tools.regex
 com.mazouri.tools.secure
+com.mazouri.tools.shell
 com.mazouri.tools.string
+com.mazouri.tools.time
 com.mazouri.tools.unit

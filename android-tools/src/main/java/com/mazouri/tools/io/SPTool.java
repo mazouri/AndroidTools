@@ -13,7 +13,7 @@ import com.mazouri.tools.Tools;
 
 public final class SPTool {
 
-    private String SP = Tools.class.getSimpleName();
+    private String SP = "AndroidTools";
     private static final Object lock = new Object();
     private static volatile SPTool instance;
 

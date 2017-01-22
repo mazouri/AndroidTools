@@ -46,7 +46,7 @@ public final class ApkTool {
     }
 
     /**
-     * 安装App(支持6.0)
+     * 安装App
      *
      * @param context  上下文
      * @param filePath 文件路径
@@ -56,7 +56,7 @@ public final class ApkTool {
     }
 
     /**
-     * 安装App（支持6.0）
+     * 安装App
      *
      * @param context 上下文
      * @param file    文件
@@ -67,7 +67,7 @@ public final class ApkTool {
     }
 
     /**
-     * 安装App（支持6.0）
+     * 安装App
      *
      * @param activity    activity
      * @param filePath    文件路径

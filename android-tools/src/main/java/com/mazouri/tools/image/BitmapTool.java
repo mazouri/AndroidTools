@@ -499,7 +499,7 @@ public final class BitmapTool {
     }
 
     /**
-     * 根据path
+     * 根据path, 获取图片旋转角度
      * @param path
      * @return
      */
