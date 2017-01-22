@@ -6,7 +6,7 @@
 
 ## About AndroidTools
 
-This library contains the most of tools that we use on Android development. Just add this to your module, you could simplify　your code, save your valuable time, and make developing app easier.
+This library contains the most of tools that we use on Android development. Just add this to your module, you could simplify　your code, save your valuable time, and make developing app easier. Enjoy tools, happy coding!
 
 ## How to use AndroidTools
 
@@ -22,7 +22,7 @@ This library contains the most of tools that we use on Android development. Just
 ### 2.Add this to your module's build.gradle file:
 
     dependencies {
-	        compile 'com.github.mazouri:AndroidTools:0.1'
+	        compile 'com.github.mazouri:AndroidTools:1.0'
 	  }
     
 ### 3.Initiate AndroidTools in your application class:
@@ -55,9 +55,14 @@ This library contains the most of tools that we use on Android development. Just
     
 ## Screenshots [tobeupdate]
 
+<img src="./screenshot/AndroidTools.jpg" width="450">
+
 ## Classify tools [tobeupdate]
 
 **You can also query by **docs****.
+
+I believe you could get the meaning of these methods by their name, so I will not translate the desc into English. Enjoy Tools!
+
 ### Tools
 
 <table>
