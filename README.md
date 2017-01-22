@@ -226,7 +226,7 @@ This library contains the most of tools that we use on Android development. Just
 
 ### InputMethodTool
     //usage examples:
-    Tools.inputMethod().isActiveSoftInput(Tools.app()); // 判断输入法是否处于激活状态
+    Tools.inputMethod().isActiveSoftInput(Tools.app()); // 判断输入法是否处于激活状态
     
 <table>
     <tr>
@@ -245,7 +245,7 @@ This library contains the most of tools that we use on Android development. Just
 
 ### ProcessTool
     //usage examples:
-    Tools.process().getAllBackgroundProcesses(); // 获取后台服务进程
+    Tools.process().getAllBackgroundProcesses(); // 获取后台服务进程
     
 <table>
     <tr>
@@ -268,7 +268,7 @@ This library contains the most of tools that we use on Android development. Just
 
 ### ProcessTool
     //usage examples:
-    Tools.process().getAllBackgroundProcesses(); // 获取后台服务进程
+    Tools.process().getAllBackgroundProcesses(); // 获取后台服务进程
     
 <table>
     <tr>
