@@ -33,12 +33,12 @@ This library contains the most of tools that we use on Android development. Just
       public void onCreate() {
           super.onCreate();
 
-	  //[Required]
-	  Tools.init(this); 
+          //[Required]
+          Tools.init(this); 
           
-	  //[Optional] if u wanna see AndroidTools internal logs, add this line.
-	  Tools.openToolsLog(true); 
-      }
+          //[Optional] if u wanna see AndroidTools internal logs, add this line.
+          Tools.openToolsLog(true); 
+      }
     }
     
 
