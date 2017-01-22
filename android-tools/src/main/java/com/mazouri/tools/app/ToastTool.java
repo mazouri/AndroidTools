@@ -3,7 +3,7 @@ package com.mazouri.tools.app;
 import android.content.Context;
 import android.widget.Toast;
 
-import com.mazouri.tools.AndroidTools;
+import com.mazouri.tools.Tools;
 
 /**
  * Created by wangdongdong on 17-1-20.
@@ -33,7 +33,7 @@ public final class ToastTool {
     }
 
     public void showToast(int stringID) {
-        Context appContext = AndroidTools.app().getApplicationContext();
+        Context appContext = Tools.app().getApplicationContext();
         showToast(appContext, appContext.getString(stringID));
     }
 
@@ -42,7 +42,7 @@ public final class ToastTool {
     }
 
     public void showToastLong(int stringID) {
-        Context appContext = AndroidTools.app().getApplicationContext();
+        Context appContext = Tools.app().getApplicationContext();
         showToastLong(appContext, appContext.getString(stringID));
     }
 }

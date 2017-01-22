@@ -2,7 +2,7 @@ package com.mazouri.tools.log;
 
 import android.util.Log;
 
-import com.mazouri.tools.AndroidTools;
+import com.mazouri.tools.Tools;
 
 /**
  * Created by wangdongdong on 17-1-20.
@@ -29,7 +29,7 @@ public final class LogTool {
     }
 
     private void generateTag() {
-        if (!AndroidTools.string().isEmpty(mTag)) {
+        if (!Tools.string().isEmpty(mTag)) {
             return;
         }
 

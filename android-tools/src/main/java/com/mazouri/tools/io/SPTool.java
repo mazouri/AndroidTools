@@ -3,7 +3,7 @@ package com.mazouri.tools.io;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.mazouri.tools.AndroidTools;
+import com.mazouri.tools.Tools;
 
 /**
  * SharedPreferences工具类
@@ -13,7 +13,7 @@ import com.mazouri.tools.AndroidTools;
 
 public final class SPTool {
 
-    private String SP = AndroidTools.class.getSimpleName();
+    private String SP = Tools.class.getSimpleName();
     private static final Object lock = new Object();
     private static volatile SPTool instance;
 
@@ -29,11 +29,11 @@ public final class SPTool {
     }
 
     /**
-     *  default SharedPreferences file name is the class name of {@link AndroidTools}, if you want to
+     *  default SharedPreferences file name is the class name of {@link Tools}, if you want to
      *  define your own file name, please use this method at your Application class.
      *
      *  <pre>
-     *   AndroidTools.sp().name("ur_sp_name");
+     *   Tools.sp().name("ur_sp_name");
      *  </pre>
      *
      * @param name
@@ -45,19 +45,19 @@ public final class SPTool {
     }
 
     public boolean getShareBoolean(String name) {
-        SharedPreferences share = AndroidTools.app().getSharedPreferences(SP, Context.MODE_PRIVATE);
+        SharedPreferences share = Tools.app().getSharedPreferences(SP, Context.MODE_PRIVATE);
         return share.getBoolean(name, false);
     }
 
     public void saveShareBoolean(String name, boolean flag) {
-        SharedPreferences share = AndroidTools.app().getSharedPreferences(SP, Context.MODE_PRIVATE);
+        SharedPreferences share = Tools.app().getSharedPreferences(SP, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = share.edit();
         editor.putBoolean(name, flag);
         editor.commit();
     }
 
     public int getShareInt(String name) {
-        SharedPreferences share = AndroidTools.app().getSharedPreferences(SP, Context.MODE_PRIVATE);
+        SharedPreferences share = Tools.app().getSharedPreferences(SP, Context.MODE_PRIVATE);
         return share.getInt(name, 0);
     }
 
@@ -67,36 +67,36 @@ public final class SPTool {
      * @return
      */
     public int getShareInt(String name, int value) {
-        SharedPreferences share = AndroidTools.app().getSharedPreferences(SP, Context.MODE_PRIVATE);
+        SharedPreferences share = Tools.app().getSharedPreferences(SP, Context.MODE_PRIVATE);
         return share.getInt(name, value);
     }
 
     public void saveShareInt(String name, int value) {
-        SharedPreferences share = AndroidTools.app().getSharedPreferences(SP, Context.MODE_PRIVATE);
+        SharedPreferences share = Tools.app().getSharedPreferences(SP, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = share.edit();
         editor.putInt(name, value);
         editor.commit();
     }
 
     public String getShareString(String name) {
-        SharedPreferences share = AndroidTools.app().getSharedPreferences(SP, Context.MODE_PRIVATE);
+        SharedPreferences share = Tools.app().getSharedPreferences(SP, Context.MODE_PRIVATE);
         return share.getString(name, "");
     }
 
     public void saveShareString(String name, String value) {
-        SharedPreferences share = AndroidTools.app().getSharedPreferences(SP, Context.MODE_PRIVATE);
+        SharedPreferences share = Tools.app().getSharedPreferences(SP, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = share.edit();
         editor.putString(name, value);
         editor.commit();
     }
 
     private long getShareLong(String name) {
-        SharedPreferences share = AndroidTools.app().getSharedPreferences(SP, Context.MODE_PRIVATE);
+        SharedPreferences share = Tools.app().getSharedPreferences(SP, Context.MODE_PRIVATE);
         return share.getLong(name, 0L);
     }
 
     private void saveShareLong(String name, Long value) {
-        SharedPreferences share = AndroidTools.app().getSharedPreferences(SP, Context.MODE_PRIVATE);
+        SharedPreferences share = Tools.app().getSharedPreferences(SP, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = share.edit();
         editor.putLong(name, value);
         editor.commit();

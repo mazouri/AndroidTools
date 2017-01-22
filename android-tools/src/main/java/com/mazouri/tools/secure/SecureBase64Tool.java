@@ -69,6 +69,10 @@ public final class SecureBase64Tool {
     // decoding
     // --------------------------------------------------------
 
+    public byte[] decode(String str) {
+        return decode(str.getBytes(), DEFAULT);
+    }
+
     /**
      * Decode the Base64-encoded data in input and return the data in a new byte
      * array.
@@ -85,6 +89,10 @@ public final class SecureBase64Tool {
      */
     public byte[] decode(String str, int flags) {
         return decode(str.getBytes(), flags);
+    }
+
+    public byte[] decode(byte[] input) {
+        return decode(input, 0, input.length, DEFAULT);
     }
 
     /**

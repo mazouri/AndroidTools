@@ -14,7 +14,7 @@ import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
 import android.util.Base64;
 
-import com.mazouri.tools.AndroidTools;
+import com.mazouri.tools.Tools;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -295,7 +295,7 @@ public final class BitmapTool {
 
         if (isSave) {
             String savePath = imageFile;
-            if (!AndroidTools.string().isEmpty(targetFile)) {
+            if (!Tools.string().isEmpty(targetFile)) {
                 savePath = targetFile;
             }
 

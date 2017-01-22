@@ -2,7 +2,7 @@ package com.mazouri.tools.sample;
 
 import android.app.Application;
 
-import com.mazouri.tools.AndroidTools;
+import com.mazouri.tools.Tools;
 
 /**
  * Created by wangdongdong on 17-1-20.
@@ -14,11 +14,14 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
 
-        AndroidTools.init(this);
-        AndroidTools.openToolsLog(true);
+        Tools.init(this); //[Required]
+        Tools.openToolsLog(true); //[Optional] if u wanna see AndroidTools internal logs, add this
 
-        AndroidTools.log().d("print log with default generated tag");
-        AndroidTools.log().tag(App.class.getSimpleName()).d("print log with tag()");
-        AndroidTools.log().d(App.class.getSimpleName(), "print log with set tag");
+        Tools.log().d("print log with default generated tag");
+        Tools.log().tag(App.class.getSimpleName()).d("print log with tag()");
+        Tools.log().d(App.class.getSimpleName(), "print log with set tag");
+
+        Tools.string().isEmpty(App.class.getSimpleName());
+        Tools.network().isWifiConnected(this);
     }
 }
