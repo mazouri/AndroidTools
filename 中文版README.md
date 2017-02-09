@@ -55,7 +55,7 @@
     
 ## Screenshots
 
-<img src="./screenshot/AndroidTools.jpg" width="450">
+<img src="./screenshot/device_info.gif">
 
 ## 归类总结，方便大家查阅
 
