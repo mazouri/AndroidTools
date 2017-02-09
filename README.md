@@ -55,7 +55,7 @@ This library contains the most of tools that we use on Android development. Just
     
 ## Screenshots [tobeupdate]
 
-<img src="./screenshot/AndroidTools.jpg" width="450">
+<img src="./screenshot/device_info.gif">
 
 ## Classify tools [tobeupdate]
 
