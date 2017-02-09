@@ -133,6 +133,22 @@ public final class NetworkTool {
         return netWorkType;
     }
 
+    public String getNetTypeName(Context context) {
+        switch (getNetType(context)) {
+            case 0:
+                return "未知";
+            case 1:
+                return "wifi";
+            case 2:
+                return "2G";
+            case 3:
+                return "3G";
+            case 4:
+                return "4G";
+        }
+        return "";
+    }
+
     /**
      * 打开网络设置界面
      * <p>3.0以下打开设置界面</p>
@@ -150,7 +166,7 @@ public final class NetworkTool {
      *
      * @return {@code true}: 是<br>{@code false}: 否
      */
-    public static boolean getDataEnabled() {
+    public boolean getDataEnabled() {
         try {
             TelephonyManager tm = (TelephonyManager) Tools.app().getSystemService(Context.TELEPHONY_SERVICE);
             Method getMobileDataEnabledMethod = tm.getClass().getDeclaredMethod("getDataEnabled");
@@ -169,7 +185,7 @@ public final class NetworkTool {
      *
      * @param enabled {@code true}: 打开<br>{@code false}: 关闭
      */
-    public static void setDataEnabled(boolean enabled) {
+    public void setDataEnabled(boolean enabled) {
         try {
             TelephonyManager tm = (TelephonyManager) Tools.app().getSystemService(Context.TELEPHONY_SERVICE);
             Method setMobileDataEnabledMethod = tm.getClass().getDeclaredMethod("setDataEnabled", boolean.class);
@@ -187,7 +203,7 @@ public final class NetworkTool {
      *
      * @return {@code true}: 是<br>{@code false}: 否
      */
-    public static boolean is4G() {
+    public boolean is4G() {
         NetworkInfo info = getActiveNetworkInfo();
         return info != null && info.isAvailable() && info.getSubtype() == TelephonyManager.NETWORK_TYPE_LTE;
     }
@@ -198,7 +214,7 @@ public final class NetworkTool {
      *
      * @return NetworkInfo
      */
-    private static NetworkInfo getActiveNetworkInfo() {
+    private NetworkInfo getActiveNetworkInfo() {
         ConnectivityManager cm = (ConnectivityManager) Tools.app()
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
         return cm.getActiveNetworkInfo();
@@ -210,7 +226,7 @@ public final class NetworkTool {
      *
      * @return 运营商名称
      */
-    public static String getNetworkOperatorName() {
+    public String getNetworkOperatorName() {
         TelephonyManager tm = (TelephonyManager) Tools.app().getSystemService(Context.TELEPHONY_SERVICE);
         return tm != null ? tm.getNetworkOperatorName() : null;
     }
@@ -222,7 +238,7 @@ public final class NetworkTool {
      * @param useIPv4 是否用IPv4
      * @return IP地址
      */
-    public static String getIPAddress(boolean useIPv4) {
+    public String getIPAddress(boolean useIPv4) {
         try {
             for (Enumeration<NetworkInterface> nis = NetworkInterface.getNetworkInterfaces(); nis.hasMoreElements(); ) {
                 NetworkInterface ni = nis.nextElement();
@@ -257,7 +273,7 @@ public final class NetworkTool {
      * @param domain 域名
      * @return ip地址
      */
-    public static String getDomainAddress(final String domain) {
+    public String getDomainAddress(final String domain) {
         try {
             ExecutorService exec = Executors.newCachedThreadPool();
             Future<String> fs = exec.submit(new Callable<String>() {

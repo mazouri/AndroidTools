@@ -27,4 +27,8 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.1.0'
     testCompile 'junit:junit:4.12'
     compile project(path: ':android-tools')
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'com.daijia.android:library:1.0.1'
+    compile 'com.lb:materialdesigndialog:1.0.0'
+    compile 'com.lovedise:permissiongen:0.0.6'
 }

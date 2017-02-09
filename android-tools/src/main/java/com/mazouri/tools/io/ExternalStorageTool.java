@@ -1,6 +1,8 @@
 package com.mazouri.tools.io;
 
 import android.os.Environment;
+import android.os.StatFs;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -58,6 +60,36 @@ public final class ExternalStorageTool {
             return true;
         }
         return false;
+    }
+
+    /**
+     * 获取可用空间大小
+     * @return
+     */
+    public long getAvailaleSDCardSize() {
+        if (!isAvailable()) {
+            return 0l;
+        }
+        File path = Environment.getExternalStorageDirectory(); //取得sdcard文件路径
+        StatFs stat = new StatFs(path.getPath());
+        long blockSize = stat.getBlockSize();
+        long availableBlocks = stat.getAvailableBlocks();
+        return availableBlocks * blockSize;
+    }
+
+    /**
+     * 获取SD大小
+     * @return
+     */
+    public long getAllSDCardSize() {
+        if (!isAvailable()) {
+            return 0l;
+        }
+        File path = Environment.getExternalStorageDirectory();
+        StatFs stat = new StatFs(path.getPath());
+        long blockSize = stat.getBlockSize();
+        long availableBlocks = stat.getBlockCount();
+        return availableBlocks * blockSize;
     }
 
     /**

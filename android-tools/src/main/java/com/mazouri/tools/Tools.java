@@ -1,6 +1,7 @@
 package com.mazouri.tools;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.mazouri.tools.apk.ApkTool;
 import com.mazouri.tools.app.AppTool;
@@ -31,6 +32,8 @@ import com.mazouri.tools.secure.SecureTool;
 import com.mazouri.tools.shell.ShellTool;
 import com.mazouri.tools.string.StringTool;
 import com.mazouri.tools.time.TimeTool;
+
+import java.lang.reflect.Method;
 
 /**
  * Created by wangdongdong on 17-1-20.
@@ -94,8 +97,21 @@ public class Tools {
 
     public static Application app() {
         if (mApp == null) {
-            throw new RuntimeException("please invoke Tools.init(app) on Application#onCreate()"
-                    + " and register your Application in manifest.");
+            try {
+                try {
+                    // 在IDE进行布局预览时使用
+                    Class<?> renderActionClass = Class.forName("com.android.layoutlib.bridge.impl.RenderAction");
+                    Method method = renderActionClass.getDeclaredMethod("getCurrentContext");
+                    Context context = (Context) method.invoke(null);
+                    mApp = new MockApplication(context);
+                } catch (Throwable ignored) {
+                    throw new RuntimeException("please invoke x.Ext.init(app) on Application#onCreate()"
+                            + " and register your Application in manifest.");
+                }
+            } catch (Throwable ignored) {
+                throw new RuntimeException("please invoke Tools.init(app) on Application#onCreate()"
+                        + " and register your Application in manifest.");
+            }
         }
         return mApp;
     }
@@ -301,5 +317,11 @@ public class Tools {
             mTime = TimeTool.instance();
         }
         return mTime;
+    }
+
+    private static class MockApplication extends Application {
+        public MockApplication(Context baseContext) {
+            this.attachBaseContext(baseContext);
+        }
     }
 }

@@ -201,13 +201,13 @@ public final class ConvertTool {
         if (byteNum < 0) {
             return "shouldn't be less than zero!";
         } else if (byteNum < ConstantsTool.KB) {
-            return String.format("%.3fB", byteNum + 0.0005);
+            return String.format("%.3fB", byteNum);
         } else if (byteNum < ConstantsTool.MB) {
-            return String.format("%.3fKB", byteNum / ConstantsTool.KB + 0.0005);
+            return String.format("%.3fKB", byteNum / (float) ConstantsTool.KB);
         } else if (byteNum < ConstantsTool.GB) {
-            return String.format("%.3fMB", byteNum / ConstantsTool.MB + 0.0005);
+            return String.format("%.3fMB", byteNum / (float) ConstantsTool.MB);
         } else {
-            return String.format("%.3fGB", byteNum / ConstantsTool.GB + 0.0005);
+            return String.format("%.3fGB", byteNum / (float) ConstantsTool.GB);
         }
     }
 

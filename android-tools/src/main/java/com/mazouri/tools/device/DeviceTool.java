@@ -41,8 +41,13 @@ import com.mazouri.tools.Tools;
 
 import org.xmlpull.v1.XmlSerializer;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigInteger;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -77,18 +82,6 @@ public final class DeviceTool {
             }
         }
         return instance;
-    }
-
-    /**
-     * 判断SDCard是否可用
-     */
-    public boolean existSDCard() {
-        if (Environment.getExternalStorageState().equals(
-                Environment.MEDIA_MOUNTED)) {
-            return true;
-        } else {
-            return false;
-        }
     }
 
     /**
@@ -133,36 +126,6 @@ public final class DeviceTool {
         } else {
             return null;
         }
-    }
-
-    /**
-     * 获取可用空间大小
-     * @return
-     */
-    public long getAvailaleSDCardSize() {
-        if (!existSDCard()) {
-            return 0l;
-        }
-        File path = Environment.getExternalStorageDirectory(); //取得sdcard文件路径
-        StatFs stat = new StatFs(path.getPath());
-        long blockSize = stat.getBlockSize();
-        long availableBlocks = stat.getAvailableBlocks();
-        return availableBlocks * blockSize;
-    }
-
-    /**
-     * 获取SD大小
-     * @return
-     */
-    public long getAllSDCardSize() {
-        if (!existSDCard()) {
-            return 0l;
-        }
-        File path = Environment.getExternalStorageDirectory();
-        StatFs stat = new StatFs(path.getPath());
-        long blockSize = stat.getBlockSize();
-        long availableBlocks = stat.getBlockCount();
-        return availableBlocks * blockSize;
     }
 
     public boolean isOnline(Context context) {
@@ -252,7 +215,7 @@ public final class DeviceTool {
      */
     public String getLatestCameraPicture(Context context) {
 
-        if (!existSDCard()) {
+        if (!Tools.externalStorage().isAvailable()) {
             return null;
         }
 
@@ -286,15 +249,15 @@ public final class DeviceTool {
         return displaysMetrics;
     }
 
-    public static float getScreenDensity() {
+    public float getScreenDensity() {
         return Tools.app().getResources().getDisplayMetrics().density;
     }
 
-    public static int getScreenHeight() {
+    public int getScreenHeight() {
         return Tools.app().getResources().getDisplayMetrics().heightPixels;
     }
 
-    public static int getScreenWidth() {
+    public int getScreenWidth() {
         return Tools.app().getResources().getDisplayMetrics().widthPixels;
     }
 
@@ -470,7 +433,7 @@ public final class DeviceTool {
      * @param context
      * @return
      */
-    public static boolean isPhone(Context context) {
+    public boolean isPhone(Context context) {
         TelephonyManager telephony = (TelephonyManager) context
                 .getSystemService(Context.TELEPHONY_SERVICE);
         if (telephony.getPhoneType() == TelephonyManager.PHONE_TYPE_NONE) {
@@ -481,23 +444,13 @@ public final class DeviceTool {
     }
 
     /**
-     * 判断设备是否是手机
-     *
-     * @return {@code true}: 是<br>{@code false}: 否
-     */
-    public static boolean isPhone() {
-        TelephonyManager tm = (TelephonyManager) Tools.app().getSystemService(Context.TELEPHONY_SERVICE);
-        return tm != null && tm.getPhoneType() != TelephonyManager.PHONE_TYPE_NONE;
-    }
-
-    /**
      * 获取IMEI码
      * <p>需添加权限 {@code <uses-permission android:name="android.permission.READ_PHONE_STATE"/>}</p>
      *
      * @return IMEI码
      */
     @SuppressLint("HardwareIds")
-    public static String getIMEI() {
+    public String getIMEI() {
         TelephonyManager tm = (TelephonyManager) Tools.app().getSystemService(Context.TELEPHONY_SERVICE);
         return tm != null ? tm.getDeviceId() : null;
     }
@@ -509,7 +462,7 @@ public final class DeviceTool {
      * @return IMSI码
      */
     @SuppressLint("HardwareIds")
-    public static String getIMSI() {
+    public String getIMSI() {
         TelephonyManager tm = (TelephonyManager) Tools.app().getSystemService(Context.TELEPHONY_SERVICE);
         return tm != null ? tm.getSubscriberId() : null;
     }
@@ -525,7 +478,7 @@ public final class DeviceTool {
      * <li>{@link TelephonyManager#PHONE_TYPE_SIP  } : 3</li>
      * </ul>
      */
-    public static int getPhoneType() {
+    public int getPhoneType() {
         TelephonyManager tm = (TelephonyManager) Tools.app().getSystemService(Context.TELEPHONY_SERVICE);
         return tm != null ? tm.getPhoneType() : -1;
     }
@@ -535,7 +488,7 @@ public final class DeviceTool {
      *
      * @return {@code true}: 是<br>{@code false}: 否
      */
-    public static boolean isSimCardReady() {
+    public boolean isSimCardReady() {
         TelephonyManager tm = (TelephonyManager) Tools.app().getSystemService(Context.TELEPHONY_SERVICE);
         return tm != null && tm.getSimState() == TelephonyManager.SIM_STATE_READY;
     }
@@ -546,7 +499,7 @@ public final class DeviceTool {
      *
      * @return sim卡运营商名称
      */
-    public static String getSimOperatorName() {
+    public String getSimOperatorName() {
         TelephonyManager tm = (TelephonyManager) Tools.app().getSystemService(Context.TELEPHONY_SERVICE);
         return tm != null ? tm.getSimOperatorName() : null;
     }
@@ -557,7 +510,7 @@ public final class DeviceTool {
      *
      * @return 移动网络运营商名称
      */
-    public static String getSimOperatorByMnc() {
+    public String getSimOperatorByMnc() {
         TelephonyManager tm = (TelephonyManager) Tools.app().getSystemService(Context.TELEPHONY_SERVICE);
         String operator = tm != null ? tm.getSimOperator() : null;
         if (operator == null) return null;
@@ -595,7 +548,7 @@ public final class DeviceTool {
      * SubscriberId(IMSI) = 460030419724900<br>
      * VoiceMailNumber = *86<br>
      */
-    public static String getPhoneStatus() {
+    public String getPhoneStatus() {
         TelephonyManager tm = (TelephonyManager) Tools.app()
                 .getSystemService(Context.TELEPHONY_SERVICE);
         String str = "";
@@ -622,7 +575,7 @@ public final class DeviceTool {
      *
      * @param phoneNumber 电话号码
      */
-    public static void dial(String phoneNumber) {
+    public void dial(String phoneNumber) {
         Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phoneNumber));
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         Tools.app().startActivity(intent);
@@ -634,7 +587,7 @@ public final class DeviceTool {
      *
      * @param phoneNumber 电话号码
      */
-    public static void call(String phoneNumber) {
+    public void call(String phoneNumber) {
         Intent intent = new Intent("android.intent.action.CALL", Uri.parse("tel:" + phoneNumber));
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         Tools.app().startActivity(intent);
@@ -646,7 +599,7 @@ public final class DeviceTool {
      * @param phoneNumber 接收号码
      * @param content     短信内容
      */
-    public static void sendSms(String phoneNumber, String content) {
+    public void sendSms(String phoneNumber, String content) {
         Uri uri = Uri.parse("smsto:" + (Tools.string().isEmpty(phoneNumber) ? "" : phoneNumber));
         Intent intent = new Intent(Intent.ACTION_SENDTO, uri);
         intent.putExtra("sms_body", Tools.string().isEmpty(content) ? "" : content);
@@ -660,7 +613,7 @@ public final class DeviceTool {
      * @param phoneNumber 接收号码
      * @param content     短信内容
      */
-    public static void sendSmsSilent(String phoneNumber, String content) {
+    public void sendSmsSilent(String phoneNumber, String content) {
         if (Tools.string().isEmpty(content)) return;
         PendingIntent sentIntent = PendingIntent.getBroadcast(Tools.app(), 0, new Intent(), 0);
         SmsManager smsManager = SmsManager.getDefault();
@@ -681,7 +634,7 @@ public final class DeviceTool {
      *
      * @return 联系人链表
      */
-    public static List<HashMap<String, String>> getAllContactInfo() {
+    public List<HashMap<String, String>> getAllContactInfo() {
         SystemClock.sleep(3000);
         ArrayList<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
         // 1.获取内容解析者
@@ -743,7 +696,7 @@ public final class DeviceTool {
      * <p>需添加权限 {@code <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>}</p>
      * <p>需添加权限 {@code <uses-permission android:name="android.permission.READ_SMS"/>}</p>
      */
-    public static void getAllSMS() {
+    public void getAllSMS() {
         // 1.获取短信
         // 1.1获取内容解析者
         ContentResolver resolver = Tools.app().getContentResolver();
@@ -804,5 +757,138 @@ public final class DeviceTool {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public String getPhoneModel() {
+        return android.os.Build.MODEL;
+    }
+
+    public String getSDKVersion() {
+        return android.os.Build.VERSION.SDK;
+    }
+
+    public String getSysVersion() {
+        return android.os.Build.VERSION.RELEASE;
+    }
+
+    public String getProduct() {
+        return android.os.Build.PRODUCT;
+    }
+
+    public String getBoard() {
+        return android.os.Build.BOARD;
+    }
+
+    public String getBrand() {
+        return android.os.Build.BRAND;
+    }
+
+    public String getSerialNumber() {
+        return android.os.Build.SERIAL;
+    }
+
+    /**
+     * 开机时间
+     * @return
+     */
+    public String getTimes() {
+        long ut = SystemClock.elapsedRealtime() / 1000;
+        if (ut == 0) {
+            ut = 1;
+        }
+        int m = (int) ((ut / 60) % 60);
+        int h = (int) ((ut / 3600));
+        return h + "时" + m + "分";
+    }
+
+    /**
+     * 获取CPU最大频率（单位KHZ）
+     * @return
+     */
+    public String getCpuMaxFreq() {
+        String result = "";
+        ProcessBuilder cmd;
+        try {
+            String[] args = { "/system/bin/cat",
+                    "/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq" };
+            cmd = new ProcessBuilder(args);
+            Process process = cmd.start();
+            InputStream in = process.getInputStream();
+            byte[] re = new byte[24];
+            while (in.read(re) != -1) {
+                result = result + new String(re);
+            }
+            in.close();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            result = "N/A";
+        }
+        return result.trim();
+    }
+
+    /**
+     * 获取CPU最小频率（单位KHZ）
+     * @return
+     */
+    public String getCpuMinFreq() {
+        String result = "";
+        ProcessBuilder cmd;
+        try {
+            String[] args = { "/system/bin/cat",
+                    "/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_min_freq" };
+            cmd = new ProcessBuilder(args);
+            Process process = cmd.start();
+            InputStream in = process.getInputStream();
+            byte[] re = new byte[24];
+            while (in.read(re) != -1) {
+                result = result + new String(re);
+            }
+            in.close();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            result = "N/A";
+        }
+        return result.trim();
+    }
+
+    /**
+     * 实时获取CPU当前频率（单位KHZ）
+     * @return
+     */
+    public String getCpuCurFreq() {
+        String result = "N/A";
+        try {
+            FileReader fr = new FileReader(
+                    "/sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq");
+            BufferedReader br = new BufferedReader(fr);
+            String text = br.readLine();
+            result = text.trim();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    /**
+     * 获取CPU名字
+     * @return
+     */
+    public String getCpuName() {
+        try {
+            FileReader fr = new FileReader("/proc/cpuinfo");
+            BufferedReader br = new BufferedReader(fr);
+            String text = br.readLine();
+            String[] array = text.split(":\\s+", 2);
+            for (int i = 0; i < array.length; i++) {
+            }
+            return array[1];
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
